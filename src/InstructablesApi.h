@@ -49,12 +49,20 @@ struct instructablesAuthorStats{
   String error;
 };
 
+struct instructableStats{
+  long comments;
+  long views;
+  long favorites;
+  String error;
+};
+
 class InstructablesApi
 {
   public:
     InstructablesApi (Client &client);
     String sendGetToInstructables(String command);
-    instructablesAuthorStats showAuthorStats(String screenName);
+    instructablesAuthorStats getAuthorStats(String screenName);
+    instructableStats getInstructableStats(String instructableId);
 
   private:
     Client *client;

@@ -34,7 +34,7 @@ String InstructablesApi::sendGetToInstructables(String command) {
 	bool avail;
 	// Connect with Instructables api with http
 	if (client->connect(INSTRUCTABLES_HOST, INSTRUCTABLES_PORT)) {
-		Serial.println(".... connected to server");
+		// Serial.println(".... connected to server");
 		String a="";
 		char c;
 		int ch_count=0;
@@ -86,7 +86,30 @@ String InstructablesApi::sendGetToInstructables(String command) {
 	return body;
 }
 
-instructablesAuthorStats InstructablesApi::showAuthorStats(String screenName){
+instructableStats InstructablesApi::getInstructableStats(String instructableId){
+	String command="/json-api/getIbleStats?id="+instructableId;
+	//Serial.println(command);
+	String response = sendGetToInstructables(command);       //recieve reply from Instructables
+	DynamicJsonBuffer jsonBuffer;
+	JsonObject& root = jsonBuffer.parseObject(response);
+	instructableStats stats;
+	if (root.success()) {
+		if (root.containsKey("error")) {
+			stats.error = root["error"].as<String>();
+		} else {
+			stats.comments = root["comments"].as<long>();
+			stats.views = root["views"].as<long>();
+			stats.favorites = root["favorites"].as<long>();
+			stats.error = "";
+		}
+	} else {
+		stats.error = "Library: Failed to parse response";
+	}
+
+	return stats;
+}
+
+instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 	String command="/json-api/showAuthorStats?screenName="+screenName;
 	//Serial.println(command);
 	String response = sendGetToInstructables(command);       //recieve reply from Instructables

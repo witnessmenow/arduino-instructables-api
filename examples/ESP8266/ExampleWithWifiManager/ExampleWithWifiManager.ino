@@ -144,7 +144,7 @@ void loop() {
 
   if (millis() > api_due_time)  {
     instructablesAuthorStats stats;
-    stats = api->showAuthorStats(screenName);
+    stats = api->getAuthorStats(screenName);
     if(stats.error.equals(""))
     {
       Serial.println("---------Author Stats---------");

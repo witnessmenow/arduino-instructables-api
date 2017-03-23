@@ -15,9 +15,11 @@
 char ssid[] = "xxx";       // your network SSID (name)
 char password[] = "yyyy";  // your network key
 #define SCREEN_NAME "witnessmenow" //Replace with your instructables user name
+#define INSTRUCABLE_ID "EBB44Y4IZT6HFIH"
+// view source of an instructable page and search for
+// "LogHit('" , the ID will be the first string after that
 
-
-WiFiClientSecure client;
+WiFiClient client;
 InstructablesApi api(client);
 
 unsigned long api_delay = 5 * 60000; //time between api requests (5mins)
@@ -54,7 +56,7 @@ void loop() {
 
   if (millis() > api_due_time)  {
     instructablesAuthorStats stats;
-    stats = api.showAuthorStats(SCREEN_NAME);
+    stats = api.getAuthorStats(SCREEN_NAME);
     if(stats.error.equals(""))
     {
       Serial.println("---------Author Stats---------");
@@ -91,6 +93,24 @@ void loop() {
       Serial.print("Error getting Author Stats: ");
       Serial.println(stats.error);
     }
+
+    instructableStats postStats;
+    postStats = api.getInstructableStats(INSTRUCABLE_ID);
+    if(postStats.error.equals(""))
+    {
+      Serial.println("---------Post Stats---------");
+      Serial.print("Views: ");
+      Serial.println(postStats.views);
+      Serial.print("Favorites: ");
+      Serial.println(postStats.favorites);
+      Serial.print("Comments: ");
+      Serial.println(postStats.comments);
+      Serial.println("------------------------");
+    } else {
+      Serial.print("Error getting Post Stats: ");
+      Serial.println(postStats.error);
+    }
+
     api_due_time = millis() + api_delay;
   }
 }
