@@ -14,8 +14,6 @@
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 //------- Replace the following! ------
-char ssid[] = "Mikrotik";       // your network SSID (name)
-char password[] = "carolinebrian";  // your network key
 #define SCREEN_NAME "witnessmenow" //Replace with your instructables user name
 #define INSTRUCABLE_ID "EBB44Y4IZT6HFIH"
 // view source of an instructable page and search for
@@ -34,10 +32,7 @@ void setup() {
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
   }
-
   delay(1000);
-
-
 }
 
 void showAuthorStats(String screenName) {
