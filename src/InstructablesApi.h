@@ -29,6 +29,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 #define INSTRUCTABLES_HOST "www.instructables.com"
 #define INSTRUCTABLES_PORT 80
 #define INSTRUCTABLES_TIMEOUT 1500
+#define INSTRUCTABLES_AUTHOR_STATS_RESPONSE_LIMIT 600
+#define INSTRUCTABLES_STATS_RESPONSE_LIMIT 200
 
 struct instructablesAuthorStats{
   long commentCount;
@@ -60,7 +62,7 @@ class InstructablesApi
 {
   public:
     InstructablesApi (Client &client);
-    String sendGetToInstructables(String command);
+    void sendGetToInstructables(String command, char *response);
     instructablesAuthorStats getAuthorStats(String screenName);
     instructableStats getInstructableStats(String instructableId);
 

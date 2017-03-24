@@ -25,18 +25,15 @@ InstructablesApi::InstructablesApi(Client &client)	{
 	this->client = &client;
 }
 
-String InstructablesApi::sendGetToInstructables(String command) {
-	String headers="";
-	String body="";
+void InstructablesApi::sendGetToInstructables(String command, char *response) {
 	bool finishedHeaders = false;
 	bool currentLineIsBlank = true;
 	unsigned long now;
 	bool avail;
 	// Connect with Instructables api with http
 	if (client->connect(INSTRUCTABLES_HOST, INSTRUCTABLES_PORT)) {
-		// Serial.println(".... connected to server");
+		Serial.println(".... connected to server");
 		String a="";
-		char c;
 		int ch_count=0;
 		client->println("GET " + command + " HTTP/1.1");
 		client->println("Host:  " INSTRUCTABLES_HOST);
@@ -58,12 +55,12 @@ String InstructablesApi::sendGetToInstructables(String command) {
 						finishedHeaders = true;
 					}
 					else{
-						headers = headers + c;
+						// headers = headers + c;
 
 					}
 				} else {
 					if (ch_count < maxMessageLength)  {
-						body=body+c;
+						response[ch_count] = c;
 						ch_count++;
 					}
 				}
@@ -82,15 +79,15 @@ String InstructablesApi::sendGetToInstructables(String command) {
 			}
 		}
 	}
-
-	return body;
 }
 
 instructableStats InstructablesApi::getInstructableStats(String instructableId){
 	String command="/json-api/getIbleStats?id="+instructableId;
-	//Serial.println(command);
-	String response = sendGetToInstructables(command);       //recieve reply from Instructables
-	DynamicJsonBuffer jsonBuffer;
+	Serial.println(command);
+  char response[INSTRUCTABLES_STATS_RESPONSE_LIMIT];
+	sendGetToInstructables(command, response);       //recieve reply from Instructables
+	Serial.println(response);
+  DynamicJsonBuffer jsonBuffer;
 	JsonObject& root = jsonBuffer.parseObject(response);
 	instructableStats stats;
 	if (root.success()) {
@@ -111,9 +108,11 @@ instructableStats InstructablesApi::getInstructableStats(String instructableId){
 
 instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 	String command="/json-api/showAuthorStats?screenName="+screenName;
-	//Serial.println(command);
-	String response = sendGetToInstructables(command);       //recieve reply from Instructables
-	DynamicJsonBuffer jsonBuffer;
+	Serial.println(command);
+  char response[INSTRUCTABLES_STATS_RESPONSE_LIMIT];
+	sendGetToInstructables(command, response);       //recieve reply from Instructables
+	Serial.println(response);
+  DynamicJsonBuffer jsonBuffer;
 	JsonObject& root = jsonBuffer.parseObject(response);
 	instructablesAuthorStats stats;
 	if (root.success()) {

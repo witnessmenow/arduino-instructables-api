@@ -11,6 +11,7 @@ cache:
 env:
     - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=d1_mini
     - SCRIPT=platformioSingle EXAMPLE_NAME=ExampleWithWifiManager EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=d1_mini
+    - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=EthernetShield BOARD=uno
 
 
 install:
