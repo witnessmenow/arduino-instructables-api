@@ -35,9 +35,7 @@ String InstructablesApi::sendGetToInstructables(String command) {
 	// Connect with Instructables api with http
 	if (client->connect(INSTRUCTABLES_HOST, INSTRUCTABLES_PORT)) {
 
-		#ifdef INSTRUCTABLE_DEBUG
-		Serial.println(".... connected to server");
-		#endif
+		if(_debug) Serial.println(".... connected to server");
 
 		char c;
 		int ch_count=0;
@@ -55,9 +53,8 @@ String InstructablesApi::sendGetToInstructables(String command) {
 				avail = finishedHeaders;
 				char c = client->read();
 
-				#ifdef INSTRUCTABLE_DEBUG
-				Serial.write(c);
-				#endif
+
+				if(_debug) Serial.write(c);
 
 				if(!finishedHeaders){
 					if (currentLineIsBlank && c == '\n') {
@@ -90,9 +87,7 @@ String InstructablesApi::sendGetToInstructables(String command) {
 instructableStats InstructablesApi::getInstructableStats(String instructableId){
 	String command="/json-api/getIbleStats?id="+instructableId;
 
-	#ifdef INSTRUCTABLE_DEBUG
-	Serial.println(command);
-	#endif
+	if(_debug) Serial.println(command);
 
 	String response = sendGetToInstructables(command);       //recieve reply from Instructables
 	DynamicJsonBuffer jsonBuffer;
@@ -117,9 +112,7 @@ instructableStats InstructablesApi::getInstructableStats(String instructableId){
 instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 	String command="/json-api/showAuthorStats?screenName="+screenName;
 
-	#ifdef INSTRUCTABLE_DEBUG
-	Serial.println(command);
-	#endif
+	if(_debug) Serial.println(command);
 
 	String response = sendGetToInstructables(command);       //recieve reply from Instructables
 	DynamicJsonBuffer jsonBuffer;

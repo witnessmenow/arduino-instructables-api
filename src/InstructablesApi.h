@@ -63,6 +63,7 @@ class InstructablesApi
     String sendGetToInstructables(String command);
     instructablesAuthorStats getAuthorStats(String screenName);
     instructableStats getInstructableStats(String instructableId);
+    bool _debug = false;
 
   private:
     Client *client;

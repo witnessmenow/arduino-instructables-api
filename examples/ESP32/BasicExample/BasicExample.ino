@@ -5,9 +5,6 @@
  *  https://www.instructables.com/member/witnessmenow/instructables/ *
  *********************************************************************/
 
- // Uncomment to enable debug logging from the library
- // #define INSTRUCTABLE_DEBUG true
-
 #include <InstructablesApi.h>
 
 // ----------------------------
@@ -58,6 +55,9 @@ void setup() {
   Serial.println("IP address: ");
   IPAddress ip = WiFi.localIP();
   Serial.println(ip);
+
+  // Uncomment to enable debug Serial Prints
+  // api._debug = true;
 }
 
 void loop() {
