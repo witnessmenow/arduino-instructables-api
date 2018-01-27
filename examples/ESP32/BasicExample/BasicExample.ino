@@ -8,10 +8,10 @@
 #include <InstructablesApi.h>
 
 // ----------------------------
-// Standard Libraries - Already Installed if you have ESP8266 set up
+// Standard Libraries - Already Installed if you have ESP32 set up
 // ----------------------------
 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <WiFiClientSecure.h>
 
 // ----------------------------
@@ -40,15 +40,11 @@ void setup() {
 
   Serial.begin(115200);
 
-  // Set WiFi to station mode and disconnect from an AP if it was Previously
-  // connected
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
-
   // Attempt to connect to Wifi network:
   Serial.print("Connecting Wifi: ");
   Serial.println(ssid);
+
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
