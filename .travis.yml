@@ -9,9 +9,9 @@ cache:
         - "~/.platformio"
 
 env:
-    - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=esp8266
-    - SCRIPT=platformioSingle EXAMPLE_NAME=ExampleWithWifiManager EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=esp8266
-    - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=ESP32 BOARD=esp32
+    - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=d1_mini
+    - SCRIPT=platformioSingle EXAMPLE_NAME=ExampleWithWifiManager EXAMPLE_FOLDER=/ BOARDTYPE=ESP8266 BOARD=d1_mini
+    - SCRIPT=platformioSingle EXAMPLE_NAME=BasicExample EXAMPLE_FOLDER=/ BOARDTYPE=ESP32 BOARD=espressif32
 
 
 install:
