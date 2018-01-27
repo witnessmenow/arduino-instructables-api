@@ -67,6 +67,7 @@ class InstructablesApi
   private:
     Client *client;
     const int maxMessageLength = 1000;
+    void closeClient();
 };
 
 #endif

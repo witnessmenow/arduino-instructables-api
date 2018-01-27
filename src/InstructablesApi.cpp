@@ -34,8 +34,11 @@ String InstructablesApi::sendGetToInstructables(String command) {
 	bool avail;
 	// Connect with Instructables api with http
 	if (client->connect(INSTRUCTABLES_HOST, INSTRUCTABLES_PORT)) {
-		// Serial.println(".... connected to server");
-		String a="";
+
+		#ifdef INSTRUCTABLE_DEBUG
+		Serial.println(".... connected to server");
+		#endif
+
 		char c;
 		int ch_count=0;
 		client->println("GET " + command + " HTTP/1.1");
@@ -51,7 +54,10 @@ String InstructablesApi::sendGetToInstructables(String command) {
 				// Allow body to be parsed before finishing
 				avail = finishedHeaders;
 				char c = client->read();
-				//Serial.write(c);
+
+				#ifdef INSTRUCTABLE_DEBUG
+				Serial.write(c);
+				#endif
 
 				if(!finishedHeaders){
 					if (currentLineIsBlank && c == '\n') {
@@ -74,21 +80,20 @@ String InstructablesApi::sendGetToInstructables(String command) {
 					currentLineIsBlank = false;
 				}
 			}
-			if (avail) {
-				//Serial.println("Body:");
-				//Serial.println(body);
-				//Serial.println("END");
-				break;
-			}
 		}
 	}
 
+	closeClient();
 	return body;
 }
 
 instructableStats InstructablesApi::getInstructableStats(String instructableId){
 	String command="/json-api/getIbleStats?id="+instructableId;
-	//Serial.println(command);
+
+	#ifdef INSTRUCTABLE_DEBUG
+	Serial.println(command);
+	#endif
+
 	String response = sendGetToInstructables(command);       //recieve reply from Instructables
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& root = jsonBuffer.parseObject(response);
@@ -111,7 +116,11 @@ instructableStats InstructablesApi::getInstructableStats(String instructableId){
 
 instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 	String command="/json-api/showAuthorStats?screenName="+screenName;
-	//Serial.println(command);
+
+	#ifdef INSTRUCTABLE_DEBUG
+	Serial.println(command);
+	#endif
+
 	String response = sendGetToInstructables(command);       //recieve reply from Instructables
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& root = jsonBuffer.parseObject(response);
@@ -142,4 +151,10 @@ instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 	}
 
 	return stats;
+}
+
+void InstructablesApi::closeClient() {
+  if(client->connected()){
+    client->stop();
+  }
 }
