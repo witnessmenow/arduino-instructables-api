@@ -89,23 +89,18 @@ instructableStats InstructablesApi::getInstructableStats(String instructableId){
 
 	if(_debug) Serial.println(command);
 
-	String response = sendGetToInstructables(command);       //recieve reply from Instructables
-	DynamicJsonBuffer jsonBuffer;
-	JsonObject& root = jsonBuffer.parseObject(response);
+	String response = sendGetToInstructables(command);       //receieve reply from Instructables
+	DynamicJsonDocument  jsonBuffer(1024);
+	DeserializationError error = deserializeJson(jsonBuffer, response);
 	instructableStats stats;
-	if (root.success()) {
-		if (root.containsKey("error")) {
-			stats.error = root["error"].as<String>();
+		if (error) {
+			stats.error = error.code();
 		} else {
-			stats.comments = root["comments"].as<long>();
-			stats.views = root["views"].as<long>();
-			stats.favorites = root["favorites"].as<long>();
+			stats.comments = jsonBuffer["comments"].as<long>();
+			stats.views = jsonBuffer["views"].as<long>();
+			stats.favorites =jsonBuffer["favorites"].as<long>();
 			stats.error = "";
 		}
-	} else {
-		stats.error = "Library: Failed to parse response";
-	}
-
 	return stats;
 }
 
@@ -114,34 +109,30 @@ instructablesAuthorStats InstructablesApi::getAuthorStats(String screenName){
 
 	if(_debug) Serial.println(command);
 
-	String response = sendGetToInstructables(command);       //recieve reply from Instructables
-	DynamicJsonBuffer jsonBuffer;
-	JsonObject& root = jsonBuffer.parseObject(response);
+	String response = sendGetToInstructables(command);       //receieve reply from Instructables
+	DynamicJsonDocument  jsonBuffer(1024);
+	DeserializationError error = deserializeJson(jsonBuffer, response);
 	instructablesAuthorStats stats;
-	if (root.success()) {
-		if (root.containsKey("error")) {
-			stats.error = root["error"].as<String>();
+		if (error) {
+			stats.error = error.code();
 		} else {
-			stats.commentCount = root["commentCount"].as<long>();
-			stats.views = root["views"].as<long>();
-			stats.featuredCount = root["featuredCount"].as<long>();
-			stats.favoritesCount = root["favoritesCount"].as<long>();
-			stats.instructablesCount = root["instructablesCount"].as<long>();
-			stats.publishedCollectionsCount = root["publishedCollectionsCount"].as<long>();
-			stats.lessonCount = root["lessonCount"].as<long>();
-			stats.courseCount = root["courseCount"].as<long>();
-			stats.topicsCount = root["topicsCount"].as<long>();
-			stats.questionsCount = root["questionsCount"].as<long>();
-			stats.answersCount = root["answersCount"].as<long>();
-			stats.bestAnswersCount = root["bestAnswersCount"].as<long>();
-			stats.followersCount = root["followersCount"].as<long>();
-			stats.subscriptionsCount = root["subscriptionsCount"].as<long>();
-			stats.collaborationsCount = root["collaborationsCount"].as<long>();
+			stats.commentCount = jsonBuffer["commentCount"].as<long>();
+			stats.views = jsonBuffer["views"].as<long>();
+			stats.featuredCount = jsonBuffer["featuredCount"].as<long>();
+			stats.favoritesCount = jsonBuffer["favoritesCount"].as<long>();
+			stats.instructablesCount = jsonBuffer["instructablesCount"].as<long>();
+			stats.publishedCollectionsCount = jsonBuffer["publishedCollectionsCount"].as<long>();
+			stats.lessonCount = jsonBuffer["lessonCount"].as<long>();
+			stats.courseCount = jsonBuffer["courseCount"].as<long>();
+			stats.topicsCount = jsonBuffer["topicsCount"].as<long>();
+			stats.questionsCount = jsonBuffer["questionsCount"].as<long>();
+			stats.answersCount = jsonBuffer["answersCount"].as<long>();
+			stats.bestAnswersCount = jsonBuffer["bestAnswersCount"].as<long>();
+			stats.followersCount = jsonBuffer["followersCount"].as<long>();
+			stats.subscriptionsCount = jsonBuffer["subscriptionsCount"].as<long>();
+			stats.collaborationsCount = jsonBuffer["collaborationsCount"].as<long>();
 			stats.error = "";
 		}
-	} else {
-		stats.error = "Library: Failed to parse response";
-	}
 
 	return stats;
 }
